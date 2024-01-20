@@ -122,7 +122,7 @@ Q -> Quit
                 print("Your hand :")
                 for card in playerhand:
                     print(card[0], end='')
-                if int(playercard1[1]) + int(playercard2[1]) + int(playercard3[1]) > 21:
+                if sum(card[1] for card in playerhand) > 21:
                     busted = True
                     break
             else:
@@ -132,21 +132,19 @@ Q -> Quit
                 print("Your hand :")
                 for card in playerhand:
                     print(card[0], end='')
-                if int(playercard1[1]) + int(playercard2[1]) + int(playercard3[1]) + int(playercard4[1]) > 21:
+                if sum(card[1] for card in playerhand) > 21:
                     busted = True
                     break
 
             #############
         if move == 'D':
-            Money -= Bet
-            Bet *= 2
             playercard3 = choice(deck)
             deck.remove(playercard3)
             playerhand.append(playercard3)
             print("Your hand :")
             for card in playerhand:
                 print(card[0], end='')
-            if int(playercard1[1]) + int(playercard2[1]) + int(playercard3[1]) > 21:
+            if sum(card[1] for card in playerhand) > 21:
                 busted = True
                 break
             print("Dealer's hand :")
@@ -169,38 +167,51 @@ Q -> Quit
             break
             break
             #############
-    if move == 'Q':
-        print("Money = {}".format(Money))
-        sys.exit()
+        if move == 'Q':
+            print("Money = {}".format(Money))
+            sys.exit()
 
     for i in dealerhand:
         dealerpoints += i[1]
     for i in playerhand:
         playerpoints += i[1]
 
+    if move == 'D':
+        Money -= Bet
+        Bet *= 2
     if busted:
         print("You busted!")
         print("Money = {}".format(Money))
-        return 0
+        if move == 'D':
+            Bet //= 2
+        return
     if dealerpoints > 21:
         print("Dealer busted!")
         Money += Bet * 2
         print("Money = {}".format(Money))
-        return 0
+        if move == 'D':
+            Bet //= 2
+        return
     if dealerpoints > playerpoints:
         print("You lost!")
         print("Money = {}".format(Money))
-        return 0
+        if move == 'D':
+            Bet //= 2
+        return
     if dealerpoints < playerpoints:
         print("You won!")
         Money += Bet * 2
         print("Money = {}".format(Money))
-        return 0
+        if move == 'D':
+            Bet //= 2
+        return
     if dealerpoints == playerpoints:
         print("It's a tie!")
         Money += Bet
-        print("Money = {}".format(Money))
-        return 0
+        if move == 'D':
+            Bet //= 2
+        return
+
 
 
 def main():
