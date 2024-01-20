@@ -1,5 +1,6 @@
 from random import *
 import sys
+import os
 
 HEARTS = chr(9829)
 DIAMONDS = chr(9830)
@@ -36,11 +37,12 @@ for suit in suits:
 
 
 def Play():
+    os.system("PAUSE")
     dealerpoints = 0
     playerpoints = 0
     global Money, deck, fulldeck, Bet
     if not deck:
-        deck = fulldeck
+        deck = fulldeck.copy()
     busted = False
     dealercard1 = choice(deck)
     deck.remove(dealercard1)
